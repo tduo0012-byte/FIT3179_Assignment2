@@ -1,26 +1,59 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 700,
-  "height": 600,
-  "data": {
-    "url": "states.json",
-    "format": {"type": "json"}
-  },
+  "title": "Average Score by Australian State",
+  "width": 720,
+  "height": 560,
+  "background": "#cce6ff",
   "projection": {"type": "mercator"},
-   "transform": [
+
+  "layer": [
     {
- 
-      "from": {
-        "data": {"url": "Average_scores_by_state.csv"},
-        "key": "State",
-        "fields": ["Score"]
+      "data": {
+        "url": "states.json",
+        "format": { "type": "json", "property": "features" }
+      },
+      "transform": [
+        { "calculate": "datum.properties && datum.properties.STATE_CODE", "as": "STATE_CODE" },
+        {
+          "lookup": "STATE_CODE",
+          "from": {
+            "data": { "url": "Average_scores_by_state.csv" },
+            "key": "State",
+            "fields": ["Score","Latitude","Longitude"]
+          }
+        },
+        { "calculate": "toNumber(datum.Score)", "as": "Score_num" }
+      ],
+      "mark": {"type": "geoshape", "stroke": "#000000", "strokeWidth": 0.5},
+      "encoding": {
+        "color": {
+          "field": "Score_num",
+          "type": "quantitative",
+          "title": "Score",
+          "scale": {"scheme": "lightgreyred"}
+        },
+        "tooltip": [
+          {"field": "properties.STATE_NAME", "title": "State"},
+          {"field": "STATE_CODE", "title": "Code"},
+          {"field": "Score_num", "title": "Score", "format": ".2f"}
+        ]
+      }
+    },
+
+    {
+      "data": { "url": "Average_scores_by_state.csv" },
+      "mark": {
+        "type": "text",
+        "fontSize": 10,
+        "stroke": "black",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {"field": "Longitude", "type": "quantitative"},
+        "latitude": {"field": "Latitude", "type": "quantitative"},
+        "text": {"field": "State"},
+        "fill": {"value": "black"}
       }
     }
-  ],
-  "mark": {"type": "geoshape", "fill": "#0c76da", "stroke": "#333"},
-  "encoding": {
-    "tooltip": [
-      {"field": "properties.STATE_NAME", "title": "State"}
-    ]
-  }
+  ]
 }
