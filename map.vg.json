@@ -1,0 +1,26 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 700,
+  "height": 600,
+  "data": {
+    "url": "states.json",
+    "format": {"type": "json"}
+  },
+  "projection": {"type": "mercator"},
+   "transform": [
+    {
+ 
+      "from": {
+        "data": {"url": "Average_scores_by_state.csv"},
+        "key": "State",
+        "fields": ["Score"]
+      }
+    }
+  ],
+  "mark": {"type": "geoshape", "fill": "#0c76da", "stroke": "#333"},
+  "encoding": {
+    "tooltip": [
+      {"field": "properties.STATE_NAME", "title": "State"}
+    ]
+  }
+}
