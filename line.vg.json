@@ -1,0 +1,85 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+  "text": "Small-scale Solar Installation From 2001 to 2025",
+  "anchor": "middle",        
+  "fontSize": 18,
+  "fontWeight": "bold",
+  "offset": 8
+},
+  "data": { "url": "Solar_Installation.csv", "format": {"type": "csv"} },
+
+  "transform": [
+    { "fold": ["Installation", "Installation(heated)"], "as": ["Type", "Installations"] },
+    { "calculate": "datum.Type === 'Installation' ? 'PV' : 'Solar water heater'", "as": "TypeLabel" }
+
+  ],
+
+  "vconcat": [
+    
+    {
+      "width": 700,
+      "height": 320,
+      "layer":[  
+        {
+            "mark": { "type": "line", "point": true, "interpolate": "monotone" },
+            "encoding": {
+            "x": { "field": "Year", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": { "field": "Installations", "type": "quantitative", "title": "Number of Installations" },
+            "color": {"field": "TypeLabel", "type": "nominal", "title": "Installation type", "sort": ["PV", "Solar water heater"],
+                        "legend": {
+                            "orient": "right",     
+                            "title": "Installation type",
+                            "labelLimit": 180,
+                            "symbolType": "circle",
+                            "symbolSize": 120,
+                            "columns": 1
+                            
+                            }
+    },
+        "tooltip": [
+          { "field": "Year", "type": "temporal" },
+          { "field": "TypeLabel", "type": "nominal" },
+          { "field": "Installations", "type": "quantitative", "format": "," }
+        ]
+      }
+      },
+      {
+            "mark": {"type": "text", "align":"left", "fontSize":12, "dx":100, "dy":50, "lineBreak":"\n"},
+            "encoding": {
+            "x": { "datum": 2009 },
+            "y": { "datum": 300000 },
+            "text": {
+              "value": "2009: Solar Credits introduced\n by the Australian Government"
+            },
+            "opacity": {
+            "condition": { "test": "!length(data('brush_store'))", "value": 1 },
+            "value": 0
+            }
+            }
+      }
+
+      ]
+    },
+    {
+      "width": 700,
+      "height": 70,
+      "mark": { "type": "line", "interpolate": "monotone" },
+      "params": [
+        { "name": "brush", "select": { "type": "interval", "encodings": ["x"] } }
+      ],
+      "encoding": {
+        "x": { "field": "Year", "type": "temporal", "axis": {"title": ""} },
+        "y": { "field": "Installations", "type": "quantitative", "title": "" },
+        "color": { "field": "TypeLabel", "type": "nominal", "legend": null },
+        "opacity": { "value": 0.6 }
+      }
+    }
+  ],
+
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFontSize": 12, "titleFontSize": 14 }
+  }
+}
+

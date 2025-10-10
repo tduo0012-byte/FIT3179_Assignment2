@@ -1,17 +1,40 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Average Score Map</title>
+  <meta charset="utf-8" />
+  <title>Average Score Map + Solar Line</title>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-  <style>body{margin:0;padding:20px;font-family:sans-serif}</style>
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; padding: 20px; font-family: system-ui, sans-serif; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 980px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    .card { background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 12px; }
+    h1 { text-align: center; margin: 0 0 16px; }
+  </style>
 </head>
 <body>
-  <div id="vis"></div> 
+  <h1>Visualisations</h1>
+  <div class="grid">
+    <div class="card">
+      <div id="map"></div>
+    </div>
+    <div class="card">
+      <div id="line"></div>
+    </div>
+  </div>
+
   <script>
-    vegaEmbed('#vis', 'map.vg.json', {actions:false});
+    vegaEmbed('#map', 'map.vg.json',  { actions: false });
+    vegaEmbed('#line', 'line.vg.json', { actions: false });
   </script>
 </body>
 </html>
