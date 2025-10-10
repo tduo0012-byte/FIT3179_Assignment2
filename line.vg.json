@@ -11,7 +11,7 @@
 
   "transform": [
     { "fold": ["Installation", "Installation(heated)"], "as": ["Type", "Installations"] },
-    { "calculate": "datum.Type === 'Installation' ? 'PV' : 'Solar water heater'", "as": "TypeLabel" }
+    { "calculate": "datum.Type === 'Installation' ? 'PV' : 'Solar water heater'", "as": "Solar Type" }
 
   ],
 
@@ -26,7 +26,7 @@
             "encoding": {
             "x": { "field": "Year", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
             "y": { "field": "Installations", "type": "quantitative", "title": "Number of Installations" },
-            "color": {"field": "TypeLabel", "type": "nominal", "title": "Installation type", "sort": ["PV", "Solar water heater"],
+            "color": {"field": "Solar Type", "type": "nominal", "title": "Installation type", "sort": ["PV", "Solar water heater"],
                         "legend": {
                             "orient": "right",     
                             "title": "Installation type",
@@ -39,7 +39,7 @@
     },
         "tooltip": [
           { "field": "Year", "type": "temporal" },
-          { "field": "TypeLabel", "type": "nominal" },
+          { "field": "Solar Type", "type": "nominal" },
           { "field": "Installations", "type": "quantitative", "format": "," }
         ]
       }
@@ -71,7 +71,7 @@
       "encoding": {
         "x": { "field": "Year", "type": "temporal", "axis": {"title": ""} },
         "y": { "field": "Installations", "type": "quantitative", "title": "" },
-        "color": { "field": "TypeLabel", "type": "nominal", "legend": null },
+        "color": { "field": "Solar Type", "type": "nominal", "legend": null },
         "opacity": { "value": 0.6 }
       }
     }

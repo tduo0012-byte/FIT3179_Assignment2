@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Solar PV Installation By State", "anchor": "middle"},
+  "padding": {"right": 140},
+
+  "data": { "url": "solar_pv.csv", "format": { "type": "csv" } },
+
+  "transform": [
+    {
+      "calculate":
+        "toNumber(trim(toString(datum['\\ufeffYear'] || datum.Year || datum['Year '] || datum[' year'])))",
+      "as": "YearFixed"
+    },
+
+    {
+      "fold": ["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"],
+      "as": ["State","Installations_raw"]
+    },
+
+    { "calculate": "toNumber(datum.Installations_raw)", "as": "Installations" }
+  ],
+
+  "mark": "rect",
+
+  "encoding": {
+    "x": {
+      "field": "YearFixed",
+      "type": "ordinal",         
+      "title": "Year"
+      
+    },
+    "y": {
+      "field": "State",
+      "type": "nominal",
+      "title": "State",
+      "sort": ["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"]
+    },
+    "color": {
+      "field": "Installations",
+      "type": "quantitative",
+      "title": "Installations",
+      "scale": { "scheme": "blues" },
+      "legend": { "orient": "right" }
+    },
+    "tooltip": [
+      { "field": "YearFixed", "type": "ordinal", "title": "Year" },
+      { "field": "State", "type": "nominal" },
+      { "field": "Installations", "type": "quantitative", "format": "," }
+    ]
+  },
+
+  "config": { "view": { "stroke": null } }
+}

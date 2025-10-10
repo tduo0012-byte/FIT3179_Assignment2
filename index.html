@@ -30,11 +30,20 @@
     <div class="card">
       <div id="line"></div>
     </div>
+        <div class="card">
+      <div id="heatmap_heat"></div>
+    </div>
+        <div class="card">
+      <div id="heatmap_pv"></div>
+    </div>
   </div>
 
   <script>
     vegaEmbed('#map', 'map.vg.json',  { actions: false });
     vegaEmbed('#line', 'line.vg.json', { actions: false });
+    vegaEmbed('#heatmap_heat', 'heatmap_solarheat.vg.json', { actions: false });
+    vegaEmbed('#heatmap_pv', 'heatmap_solarpv.vg.json', { actions: false });
+
   </script>
 </body>
 </html>
