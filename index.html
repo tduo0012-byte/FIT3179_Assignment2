@@ -25,6 +25,91 @@
     .div5 { grid-column: 2; grid-row: 3; }          /* map 2: bottom-right */
 
     .title { text-align: center; margin: 12px 0; }
+
+/* Card */
+.insight-card1{
+  position:absolute;                /* change/remove if not floating */
+  top: 100px; left: 720px;           /* tweak to taste */
+  max-width: 420px;
+  background: rgba(255,255,255,0.92);
+  color:#0f1b25;
+  padding:16px 18px;
+  border-radius:14px;
+  border:1px solid #e6ecf2;
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
+  font: 17px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.insight-card2{
+  position:absolute;                /* change/remove if not floating */
+  top: 620px; left: 840px;           /* tweak to taste */
+  max-width: 320px;
+  background: rgba(255,255,255,0.92);
+  color:#0f1b25;
+  padding:16px 18px;
+  border-radius:14px;
+  border:1px solid #e6ecf2;
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
+  font: 17px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Headings */
+.insight-title{
+  font-weight: 800;
+  font-size: 25px;
+  letter-spacing: .2px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.insight-subtitle{
+  margin-top: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  color:#334155;
+  font-size: 17px;
+}
+
+/* List */
+.insight-list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.insight-list li{
+  position: relative;
+  padding-left: 18px;
+  margin: 8px 0;
+}
+.insight-list li::before{
+  content: "•";
+  position:absolute; left:0; top:0;
+  color:#0ea5e9; font-weight:900;
+}
+
+/* Badges & chips */
+.badge{
+  display:inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  color:#075985;
+  background:#e0f2fe;
+  border:1px solid #7dd3fc;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-right: 6px;
+}
+.chip-row{ margin-top: 8px; display:flex; flex-wrap:wrap; gap:8px; }
+.chip{
+  background:#f1f5f9;
+  border:1px solid #cbd5e1;
+  color:#0f172a;
+  padding:6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+}
+ 
+
   </style>
 </head>
 <body>
@@ -36,6 +121,45 @@
     <div class="div4" id="map1"></div>
     <div class="div5" id="map2"></div>
   </div>
+  
+<div class="insight-card1">
+  <div class="insight-title">Key Takeaways</div>
+  <ul class="insight-list">
+    <li><span class="badge">2009</span>Solar Credits arrive; solar water heater peaks and PV momentum begins.</li>
+    <li>PV dominates the later years while solar water heater tapers off.</li>
+    <li><span class="badge">~2018-2021</span> A decade on, both technologies surge again as costs fall.</li>
+  </ul>
+
+  <div class="insight-subtitle">Top contributors to total installations</div>
+  <div class="chip-row">
+    <span class="chip">New South Wales</span>
+    <span class="chip">Queensland</span>
+    <span class="chip">Victoria</span>
+  </div>
+    <ul class="insight-list">
+    <li>Hotter and sunnier states are likely to adopt Solar Photovoltaic Installations.</li>
+    <li>Whereas, colder states demand more on Solar Water Heater Installations.</li>
+  </ul>
+</div>
+
+<div class="insight-card2">
+  <ul class="insight-list">
+    <li>Socio-Economic Indexes for Areas (SEIFA), SEIFA combines Census data such as income, education, employment, occupation, housing and family structure to summarise the socio-economic characteristics of an area.</li>
+    <li>Australian Capital Territory has the highest SEIFA score, next comes New South Wales and Victoria.</li>
+    <li><span class="badge">Solar PV</span>Strong positive relationship between SEIFA score and the number of installations in NSW and VIC</li>
+    <li><span class="badge">Solar Water Heater</span>Strong positive relationship is also observed in those states</li>
+    <li>Exceptionally, ACT has low number of installations in both types</li>
+    <li>SEI helps, but isn’t decisive: Wealthier states adopt more, yet policy, housing type, and population size are major co-drivers.</li>
+
+
+
+  </ul>
+
+</div>
+
+
+
+
 
   <script>
     // Each .vg.json should set its own "width" and "height" and NOT use autosize:{type:"fit"}

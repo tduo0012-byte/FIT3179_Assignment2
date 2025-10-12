@@ -6,7 +6,7 @@
   "projection": { "type": "mercator", "center": [134, -27], "scale": 850 },
 
   "title": {
-    "text": { "expr": "metric === 'SolarPV' ? 'Solar PV installations by state' : 'Solar hot water installations by state'" },
+    "text": { "expr": "metric === 'SolarPV' ? 'Solar PV installations by state' : 'Solar Water Heater installations by state'" },
     "anchor": "middle"
   },
 
@@ -17,7 +17,7 @@
       "bind": {
         "input": "select",
         "options": ["SolarPV", "SolarHeat"],
-        "labels": ["PV (electric)", "Solar hot water"],
+        "labels": ["PV (electric)", "Water Heater"],
         "element": "#filter"
 
       }
@@ -66,7 +66,7 @@
     "fontWeight": "bold",
     "dy": -6,
     "fill": "#111",
-    "stroke": "white",
+    
     "strokeWidth": 3
   },
   "encoding": {
