@@ -2,48 +2,48 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Average Score Map + Solar Line</title>
+  <title>Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <style>
-    :root { color-scheme: light dark; }
-    body { margin: 0; padding: 20px; font-family: system-ui, sans-serif; }
-    .grid {
+    .parent{
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
+      grid-template-columns: auto auto;   /* two columns sized to content */
+      grid-template-rows: auto auto auto; /* three rows sized to content */
+      gap: 16px;
+      align-items: start;   /* don't stretch vertically */
+      justify-items: start; /* don't stretch horizontally */
+      padding: 16px;
+      background: #0f1b25;
     }
-    @media (min-width: 980px) {
-      .grid { grid-template-columns: 1fr 1fr; }
-    }
-    .card { background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 12px; }
-    h1 { text-align: center; margin: 0 0 16px; }
+
+    .div1 { grid-column: 2; grid-row: 1 / span 2; } /* line chart: right column, spans 2 rows */
+    .div2 { grid-column: 1; grid-row: 1; }          /* heatmap 1: top-left */
+    .div3 { grid-column: 1; grid-row: 2; }          /* heatmap 2: middle-left */
+    .div4 { grid-column: 1; grid-row: 3; }          /* map 1: bottom-left */
+    .div5 { grid-column: 2; grid-row: 3; }          /* map 2: bottom-right */
+
+    .title { text-align: center; margin: 12px 0; }
   </style>
 </head>
 <body>
-  <h1>Visualisations</h1>
-  <div class="grid">
-    <div class="card">
-      <div id="map"></div>
-    </div>
-    <div class="card">
-      <div id="line"></div>
-    </div>
-        <div class="card">
-      <div id="heatmap_heat"></div>
-    </div>
-        <div class="card">
-      <div id="heatmap_pv"></div>
-    </div>
+  <h1 class="title">Power & Privilege: The Socio-Economic Pattern of Solar</h1>
+  <div class="parent">
+    <div class="div1" id="line"></div>
+    <div class="div2" id="heat1"></div>
+    <div class="div3" id="heat2"></div>
+    <div class="div4" id="map1"></div>
+    <div class="div5" id="map2"></div>
   </div>
 
   <script>
-    vegaEmbed('#map', 'map.vg.json',  { actions: false });
-    vegaEmbed('#line', 'line.vg.json', { actions: false });
-    vegaEmbed('#heatmap_heat', 'heatmap_solarheat.vg.json', { actions: false });
-    vegaEmbed('#heatmap_pv', 'heatmap_solarpv.vg.json', { actions: false });
-
+    // Each .vg.json should set its own "width" and "height" and NOT use autosize:{type:"fit"}
+    vegaEmbed('#line',  'line.vg.json',              { actions:false, renderer:'svg' });
+    vegaEmbed('#heat1', 'heatmap_solarheat.vg.json', { actions:false, renderer:'svg' });
+    vegaEmbed('#heat2', 'heatmap_solarpv.vg.json',   { actions:false, renderer:'svg' });
+    vegaEmbed('#map1',  'map.vg.json',               { actions:false, renderer:'svg' });
+    vegaEmbed('#map2',  'solar_map.vg.json',         { actions:false, renderer:'svg' });
   </script>
 </body>
 </html>

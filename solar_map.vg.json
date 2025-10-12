@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 720,
+  "height": 650,
+  "background": "#cce6ff",
+  "projection": { "type": "mercator", "center": [134, -27], "scale": 850 },
+
+  "title": {
+    "text": { "expr": "metric === 'SolarPV' ? 'Solar PV installations by state' : 'Solar hot water installations by state'" },
+    "anchor": "middle"
+  },
+
+  "params": [
+    {
+      "name": "metric",
+      "value": "SolarPV",
+      "bind": {
+        "input": "select",
+        "options": ["SolarPV", "SolarHeat"],
+        "labels": ["PV (electric)", "Solar hot water"],
+        "element": "#filter"
+
+      }
+    }
+  ],
+
+  "layer": [
+    {
+      "data": { "url": "states.json", "format": { "type": "json", "property": "features" } },
+      "transform": [
+        { "calculate": "datum.properties && datum.properties.STATE_CODE", "as": "STATE_CODE" },
+        {
+          "lookup": "STATE_CODE",
+          "from": {
+            "data": { "url": "Solar_by_state.csv" },
+            "key": "State",
+            "fields": ["SolarHeat", "SolarPV","Longitude","Latitude"]
+          }
+        },
+        { "calculate": "toNumber(datum[metric])", "as": "Selected" }
+      ],
+      "mark": { "type": "geoshape", "stroke": "#000", "strokeWidth": 0.5 },
+      "encoding": {
+        "color": {
+          "field": "Selected",
+          "type": "quantitative",
+          "title": "Installations",
+          "scale": { "scheme": "lightgreyteal", "type": "symlog", "clamp": true }
+        },
+        "tooltip": [
+          { "field": "properties.STATE_NAME", "title": "State" },
+          { "field": "properties.STATE_CODE", "title": "Code" },
+          { "field": "Selected", "title": "Installations", "format": "," }
+        ]
+      }
+    },
+
+{
+  "data": {
+    "url": "Solar_by_state.csv",
+    "format": { "type": "csv", "parse": { "Longitude": "number", "Latitude": "number" } }
+  },
+  "mark": {
+    "type": "text",
+    "fontSize": 12,
+    "fontWeight": "bold",
+    "dy": -6,
+    "fill": "#111",
+    "stroke": "white",
+    "strokeWidth": 3
+  },
+  "encoding": {
+    "longitude": { "field": "Longitude", "type": "quantitative" },
+    "latitude":  { "field": "Latitude",  "type": "quantitative" },
+    "text":       { "field": "State" }
+  }
+}
+
+  ]
+}
