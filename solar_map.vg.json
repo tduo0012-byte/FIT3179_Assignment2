@@ -1,18 +1,18 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 720,
-  "height": 650,
+  "height": 560,
   "background": "#cce6ff",
-  "projection": { "type": "mercator", "center": [134, -27], "scale": 850 },
+  "projection": { "type": "mercator"},
 
   "title": {
-    "text": { "expr": "metric === 'SolarPV' ? 'Solar PV installations by state' : 'Solar Water Heater installations by state'" },
+    "text": { "expr": "SolarType === 'SolarPV' ? 'Solar PV installations by state' : 'Solar Water Heater installations by state'" },
     "anchor": "middle"
   },
 
   "params": [
     {
-      "name": "metric",
+      "name": "SolarType",
       "value": "SolarPV",
       "bind": {
         "input": "select",
@@ -37,7 +37,7 @@
             "fields": ["SolarHeat", "SolarPV","Longitude","Latitude"]
           }
         },
-        { "calculate": "toNumber(datum[metric])", "as": "Selected" }
+        { "calculate": "toNumber(datum[SolarType])", "as": "Selected" }
       ],
       "mark": { "type": "geoshape", "stroke": "#000", "strokeWidth": 0.5 },
       "encoding": {

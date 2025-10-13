@@ -1,58 +1,89 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Power & Privilege: The Socio-Economic Pattern of Solar</title>
+
+  <!-- Vega libs -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@6.0.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.0.0"></script>
+
   <style>
-    .parent{
-      display: grid;
-      grid-template-columns: auto auto;   /* two columns sized to content */
-      grid-template-rows: auto auto auto; /* three rows sized to content */
-      gap: 16px;
-      align-items: start;   /* don't stretch vertically */
-      justify-items: start; /* don't stretch horizontally */
-      padding: 16px;
-      background: #0f1b25;
+    /* reset-ish */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#23323d; background:#f7fafc; }
+
+    /* hero */
+    .hero {
+      background: linear-gradient(135deg,#0ea5e9 0%, #0369a1 100%);
+      color:#fff; text-align:center; padding: 56px 16px 40px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.14) inset;
     }
+    .hero h1 { font-weight: 800; font-size: clamp(26px,3.2vw,38px); letter-spacing:.2px; margin-bottom: 8px; }
+    .hero p  { opacity:.95; max-width: 880px; margin: 0 auto; font-size: clamp(14px,1.6vw,18px); }
 
-    .div1 { grid-column: 2; grid-row: 1 / span 2; } /* line chart: right column, spans 2 rows */
-    .div2 { grid-column: 1; grid-row: 1; }          /* heatmap 1: top-left */
-    .div3 { grid-column: 1; grid-row: 2; }          /* heatmap 2: middle-left */
-    .div4 { grid-column: 1; grid-row: 3; }          /* map 1: bottom-left */
-    .div5 { grid-column: 2; grid-row: 3; }          /* map 2: bottom-right */
+    /* container */
+    .container { max-width: 1400px; margin: auto auto; padding: 24px 16px 40px; align-items: center;}
 
-    .title { text-align: center; margin: 12px 0; }
+    /* section title */
+    .section-title { text-align:center; margin: 12px 0 18px; }
+    .section-title h2 { color:#0b3b56; font-size: clamp(20px,2.4vw,28px); font-weight: 800; }
 
-/* Card */
-.insight-card1{
-  position:absolute;                /* change/remove if not floating */
-  top: 100px; left: 720px;           /* tweak to taste */
-  max-width: 420px;
-  background: rgba(255,255,255,0.92);
-  color:#0f1b25;
-  padding:16px 18px;
-  border-radius:14px;
-  border:1px solid #e6ecf2;
-  box-shadow: 0 6px 18px rgba(0,0,0,.18);
-  font: 17px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    /* grid */
+    .grid {
+      display:grid;
+      grid-template-columns: auto auto; 
+      grid-template-rows: auto auto auto auto auto;      
+      gap: 18px;
+      align-items: center;
+
+    }
+    .card { background:#fff; border:1px solid #e5edf4; border-radius:12px; padding:10px; box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+
+    /* placement */
+    .heat1 { grid-column:1; grid-row:1; }
+    .heat2 { grid-column:1; grid-row:2; }
+    .note  { grid-column:1; grid-row:3; }
+    .line  { grid-column:2; grid-row:1 / span 2; }
+    .map1  { grid-column:1 ; grid-row:4; }
+    .map2  { grid-column:2; grid-row:4; }
+    .note2 { grid-column:1 / span 3; grid-row:5; }
+    .area  { grid-column: 2; grid-row: 3;}
+
+    /* let charts keep their native sizes */
+    .vis { display:inline-block; }
+
+    /* note card */
+    .insight {
+      background: #e8eaec; color:#000000; border-radius:12px; padding:16px;
+      border:1px solid #213241;
+    }
+    .insight h3 { margin-bottom: 8px; font-weight: 800; font-size: 20px; text-align: center;}
+    .insight ul { margin-left: 18px; line-height: 1.5; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .badge{
+  display:inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  color:#075985;
+  background:#e0f2fe;
+  border:1px solid #7dd3fc;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-right: 6px;
 }
-
-.insight-card2{
-  position:absolute;                /* change/remove if not floating */
-  top: 620px; left: 840px;           /* tweak to taste */
-  max-width: 320px;
-  background: rgba(255,255,255,0.92);
-  color:#0f1b25;
-  padding:16px 18px;
-  border-radius:14px;
-  border:1px solid #e6ecf2;
-  box-shadow: 0 6px 18px rgba(0,0,0,.18);
-  font: 17px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+.chip{
+  background:#89b3dd;
+  border:1px solid #cbd5e1;
+  color:#0f172a;
+  padding:6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
 }
-
 /* Headings */
 .insight-title{
   font-weight: 800;
@@ -67,107 +98,213 @@
   font-size: 15px;
   color:#334155;
   font-size: 17px;
+  text-align: center;
 }
 
-/* List */
 .insight-list{
   list-style: none;
   margin: 0;
   padding: 0;
-}
-.insight-list li{
-  position: relative;
-  padding-left: 18px;
-  margin: 8px 0;
-}
-.insight-list li::before{
-  content: "•";
-  position:absolute; left:0; top:0;
-  color:#0ea5e9; font-weight:900;
+  text-align: center;
+  font-size: 30;
 }
 
-/* Badges & chips */
-.badge{
-  display:inline-block;
-  font-size: 15px;
-  font-weight: 700;
-  color:#075985;
-  background:#e0f2fe;
-  border:1px solid #7dd3fc;
-  border-radius: 999px;
-  padding: 2px 8px;
-  margin-right: 6px;
+.insight-list1{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align:justify;
+  font-size: 30;
 }
-.chip-row{ margin-top: 8px; display:flex; flex-wrap:wrap; gap:8px; }
-.chip{
-  background:#f1f5f9;
-  border:1px solid #cbd5e1;
-  color:#0f172a;
-  padding:6px 10px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 15px;
-}
- 
 
+.chip-row{text-align: center;}
+
+/* Card base (inherits your .card) */
+.note2 {
+  background: #eeefef;             /* dark card */
+  color: #000000;
+  border: 1px solid #203444;
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+/* Header */
+.note2-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px;
+}
+.note2-head h3 {
+  margin: 0; font-size: 18px; font-weight: 800; letter-spacing: .2px;
+}
+.pill {
+  font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+  border: 1px solid #2a3b4a;
+}
+.pill-muted { color: #9fb3c5; background: #132635; }
+
+/* List */
+.insight-list1 {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 10px;
+}
+.insight-list1 li {
+  display: grid;
+  grid-template-columns: auto 1fr; /* icon column + text */
+  align-items: start;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+/* Dots for standard bullets */
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  margin-top: 9px;
+  background: linear-gradient(180deg, #38bdf8, #0ea5e9);
+  box-shadow: 0 0 0 3px rgba(14,165,233,.12);
+}
+
+/* Badges that replace the dot in some items */
+.badge1 {
+  align-self: start;
+  font-size: 12px; font-weight: 800; letter-spacing: .3px;
+  padding: 4px 8px; border-radius: 8px;
+  border: 1px solid transparent;
+  margin-top: 2px;
+}
+.badge-pv  { color:#073b5c; background:#bfe7ff; border-color:#7cc7ec; }
+.badge-swh { color:#5a2a00; background:#ffd9b3; border-color:#ffb266; }
+
+/* Highlighted exception */
+.callout {
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+  border-left: 3px solid #f59e0b;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+/* Links (if you add any) */
+.note2 a { color:#7cc7ec; text-decoration: underline; text-decoration-thickness: 2px; }
+.note2 a:hover { color:#a0e0ff; }
+
+
+    /* responsive stack */
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .heat1,.heat2,.note,.line,.map1,.map2 { grid-column:1; grid-row:auto; }
+    }
   </style>
 </head>
 <body>
-  <h1 class="title">Power & Privilege: The Socio-Economic Pattern of Solar</h1>
-  <div class="parent">
-    <div class="div1" id="line"></div>
-    <div class="div2" id="heat1"></div>
-    <div class="div3" id="heat2"></div>
-    <div class="div4" id="map1"></div>
-    <div class="div5" id="map2"></div>
-  </div>
-  
-<div class="insight-card1">
-  <div class="insight-title">Key Takeaways</div>
-  <ul class="insight-list">
-    <li><span class="badge">2009</span>Solar Credits arrive; solar water heater peaks and PV momentum begins.</li>
-    <li>PV dominates the later years while solar water heater tapers off.</li>
-    <li><span class="badge">~2018-2021</span> A decade on, both technologies surge again as costs fall.</li>
-  </ul>
 
-  <div class="insight-subtitle">Top contributors to total installations</div>
-  <div class="chip-row">
-    <span class="chip">New South Wales</span>
-    <span class="chip">Queensland</span>
-    <span class="chip">Victoria</span>
+  <header class="hero">
+    <h1>Power & Privilege: The Socio-Economic Pattern of Solar</h1>
+    <p>How Australia's solar adoption evolved since 2001-by technology, by state, and in relation to socio-economic advantage.</p>
+  </header>
+
+  <main class="container">
+    <div class="section-title"><h2>Solar uptake across states and years</h2></div>
+
+    <section class="grid">
+      <!-- Heatmap: Solar hot water -->
+      <div class="card heat1"><div id="heat1" class="vis"></div></div>
+
+      <!-- Heatmap: PV -->
+      <div class="card heat2"><div id="heat2" class="vis"></div></div>
+
+
+      <!-- Line chart: national trend (with annotation/brush) -->
+      <div class="card line"><div id="line" class="vis"></div></div>
+
+      <!-- Narrative-->
+      <div class="card note">
+        <div class="insight-title">Key Takeaways</div>
+        <ul class="insight-list">
+          <li><span class="badge">2009</span>Solar Credits arrive; solar water heater peaks and PV momentum begins.</li>
+          <li>PV dominates the later years while solar water heater tapers off.</li>
+          <li><span class="badge">~2018-2021</span> A decade on, both technologies surge again as costs fall.</li>
+        </ul>
+
+        <div class="insight-subtitle">Top contributors to total installations</div>
+        <br>
+        <div class="chip-row">
+          <span class="chip">New South Wales</span>
+          <span class="chip">Queensland</span>
+          <span class="chip">Victoria</span>
+        </div>
+        <br>
+        <div>
+          <ul class="insight-list">
+          <li>Hotter and sunnier states are likely to adopt Solar Photovoltaic Installations.</li>
+          <li>Whereas, colder states demand more on Solar Water Heater Installations.</li>
+        </ul>
+        </div>
+    
+      </div>
+
+      <!-- Maps -->
+      <div class="card map1"><div id="map1" class="vis"></div></div>
+      <div class="card map2"><div id="map2" class="vis"></div></div>
+
+      <!-- Narrative-->
+      <!-- Narrative -->
+<div class="card note2">
+  <div class="note2-head">
+    <h3>Socio-Economic Index & Solar Uptake</h3>
+    <span class="pill pill-muted">SEIFA</span>
   </div>
-    <ul class="insight-list">
-    <li>Hotter and sunnier states are likely to adopt Solar Photovoltaic Installations.</li>
-    <li>Whereas, colder states demand more on Solar Water Heater Installations.</li>
+
+  <ul class="insight-list1">
+    <li>
+      <span class="dot"></span>
+      <span>
+        <b>SEIFA</b> combines Census indicators—income, education, employment, occupation, housing, and family structure—
+        to summarise the socio-economic characteristics of an area.
+      </span>
+    </li>
+
+    <li>
+      <span class="dot"></span>
+      <span><b>ACT</b> has the highest SEIFA score, followed by <b>NSW</b> and <b>VIC</b>.</span>
+    </li>
+
+    <li>
+      <span class="badge1 badge-pv">Solar PV</span>
+      <span>Strong positive relationship between SEIFA and installations in <b>NSW</b> and <b>VIC</b>.</span>
+    </li>
+
+    <li>
+      <span class="badge1 badge-swh">Solar Water Heater</span>
+      <span>Similar positive relationship observed in those states.</span>
+    </li>
+
+    <li class="callout">
+      <span class="dot"></span>
+      <span><b>Exception:</b> <b>ACT</b> shows relatively low installations for both technologies despite high SEIFA.</span>
+    </li>
+
+    <li>
+      <span class="dot"></span>
+      <span><b>SEIFA helps but isn’t decisive:</b> wealth, policy settings, housing type, and population size all co-drive adoption.</span>
+    </li>
   </ul>
 </div>
 
-<div class="insight-card2">
-  <ul class="insight-list">
-    <li>Socio-Economic Indexes for Areas (SEIFA), SEIFA combines Census data such as income, education, employment, occupation, housing and family structure to summarise the socio-economic characteristics of an area.</li>
-    <li>Australian Capital Territory has the highest SEIFA score, next comes New South Wales and Victoria.</li>
-    <li><span class="badge">Solar PV</span>Strong positive relationship between SEIFA score and the number of installations in NSW and VIC</li>
-    <li><span class="badge">Solar Water Heater</span>Strong positive relationship is also observed in those states</li>
-    <li>Exceptionally, ACT has low number of installations in both types</li>
-    <li>SEI helps, but isn’t decisive: Wealthier states adopt more, yet policy, housing type, and population size are major co-drivers.</li>
+
+      <div class="card area"><div id="area" class="vis"></div></div>
 
 
-
-  </ul>
-
-</div>
-
-
-
-
+      
+    </section>
+  </main>
 
   <script>
-    // Each .vg.json should set its own "width" and "height" and NOT use autosize:{type:"fit"}
-    vegaEmbed('#line',  'line.vg.json',              { actions:false, renderer:'svg' });
+    // Embed your specs (each spec should define its own width/height and avoid autosize:{type:"fit"})
     vegaEmbed('#heat1', 'heatmap_solarheat.vg.json', { actions:false, renderer:'svg' });
     vegaEmbed('#heat2', 'heatmap_solarpv.vg.json',   { actions:false, renderer:'svg' });
+    vegaEmbed('#line',  'line.vg.json',              { actions:false, renderer:'svg' });
     vegaEmbed('#map1',  'map.vg.json',               { actions:false, renderer:'svg' });
     vegaEmbed('#map2',  'solar_map.vg.json',         { actions:false, renderer:'svg' });
+    vegaEmbed('#area',  'area.vg.json',              { actions:false, renderer:'svg' });
   </script>
 </body>
 </html>

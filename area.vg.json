@@ -1,0 +1,30 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Australia: Renewable Generation by Source", "anchor": "middle"},
+  "width": 960, "height": 300,
+
+  "data": {"url": "renewables_by_year.csv", "format": {"type": "csv", "parse": {"Year":"number"}}},
+
+  "transform": [
+    {"fold": ["Hydro","Wind","Solar","Bioenergy"], "as": ["Source","ValueRaw"]},
+    {"calculate": "toNumber(datum.ValueRaw)", "as": "GWh"}
+  ],
+
+  "params": [
+    {
+      "name": "pick",
+      "select": { "type": "point", "fields": ["Source"], "bind": "legend", "toggle": true }
+    }
+  ],
+
+  "mark": {"type": "area", "interpolate": "monotone"},
+
+  "encoding": {
+    "x": {"field": "Year", "type": "quantitative", "axis": {"format": "d"}},
+    "y": {"field": "GWh", "type": "quantitative", "title": "Generation (GWh)"},
+    "color": {"field": "Source", "type": "nominal", "title": "Source", "scale": {"scheme": "tableau10"}},
+    "opacity": { "condition": {"param": "pick", "value": 1}, "value": 0.15 },
+    "order": {"field": "Source"},
+    "tooltip": [{"field":"Year","title":"Year"},{"field":"Source"},{"field":"GWh","format":","}]
+  }
+}
