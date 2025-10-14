@@ -45,7 +45,7 @@
           "field": "Selected",
           "type": "quantitative",
           "title": "Installations",
-          "scale": { "scheme": "lightgreyteal", "type": "symlog", "clamp": true }
+          "scale": { "scheme": "lightorange", "type": "symlog", "clamp": true }
         },
         "tooltip": [
           { "field": "properties.STATE_NAME", "title": "State" },

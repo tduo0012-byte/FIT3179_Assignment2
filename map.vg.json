@@ -30,7 +30,7 @@
           "field": "Score_num",
           "type": "quantitative",
           "title": "Score",
-          "scale": {"scheme": "lightgreyred"}
+          "scale": {"scheme": "greens"}
         },
         "tooltip": [
           {"field": "properties.STATE_NAME", "title": "State"},
