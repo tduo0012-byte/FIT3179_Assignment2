@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {"text": "Solar PV Installation By State", "anchor": "middle"},
+  "title": {"text": "Solar PV Installation By State between 2001 and 2025", "anchor": "middle"},
 
   "data": { "url": "solar_pv.csv", "format": { "type": "csv" } },
 
